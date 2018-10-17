@@ -26,6 +26,7 @@ public class Application {
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder, UriConfiguration uriConfiguration) {
 
+        
         String httpUri = uriConfiguration.getHttpbin();
 
         String uriBiblioteca = "https://gestao-livro-aula3.herokuapp.com/api/v1/";
