@@ -29,53 +29,48 @@ public class Application {
         
         String httpUri = uriConfiguration.getHttpbin();
 
-        String uriBiblioteca = "https://gestao-livro-aula3.herokuapp.com/api/v1/";
-        String uriAutenticacao = "https://dry-mesa-35311.herokuapp.com/v1/public/";
-        String uriPagamento = "https://credit-card-service-diegoapp.herokuapp.com/api";
-        String uriAuditoria = "https://app-auditoria-aula3.herokuapp.com/";
+        String uriBiblioteca = "https://gestao-livro-aula3.herokuapp.com";
+        String uriAutenticacao = "https://dry-mesa-35311.herokuapp.com";
+        String uriPagamento = "https://credit-card-service-diegoapp.herokuapp.com";
+        String uriAuditoria = "https://app-auditoria-aula3.herokuapp.com";
         
         String uriBaseGatewayBiblioteca = "/v1/gateway/bilioteca/";
+        String uriBaseGatewayAutenticacao = "/v1/gateway/autenticacao/";
+        String uriBaseGatewayPagamento = "/v1/gateway/pagamento/";
+        String uriBaseGatewayAuditoria = "/v1/gateway/auditoria/";
+        
+        String uriPrefixoBiblioteca = "/api/v1/";
+        String uriPrefixoAutenticacao = "/v1/public/";
+        String uriPrefixoPagamento = "/v1/public/";
+        String uriPrefixoAuditoria = "/api/v1/";
         
         return builder.routes() 
                 
                 // biblioteca
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "livros").uri(uriBiblioteca + "livros"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "livros/{idLivro}").uri(uriBiblioteca + "livros/{idLivro}"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "livros/{idLivro}/autores").uri(uriBiblioteca + "livros/{idLivro}/autores"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "livros/{idLivro}/editoras").uri(uriBiblioteca + "livros/{idLivro}/editoras"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "livros/{idLivro}/comentarios").uri(uriBiblioteca + "livros/{idLivro}/comentarios"))
+                .route("rota para API biblioteca", p -> p
+                        .path(uriBaseGatewayBiblioteca + "**")
+                        .filters(f->f.rewritePath(uriBaseGatewayBiblioteca + "(?<path>.*)",uriPrefixoBiblioteca + "${path}"))
+                        .uri(uriBiblioteca))
                 
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "autores").uri(uriBiblioteca + "bilioteca/autores"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "autores/{idAutor}").uri(uriBiblioteca + "bilioteca/autores/{idAutor}"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "autores/{idAutor}/livros").uri(uriBiblioteca + "bilioteca/autores/{idAutor}/livros"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "autores/{idAutor}/editoras").uri(uriBiblioteca + "bilioteca/autores/{idAutor}/editoras"))
-                
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "editoras").uri(uriBiblioteca + "bilioteca/editoras"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "editoras/{idEditora}").uri(uriBiblioteca + "bilioteca/editoras/{idEditora}"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "editoras/{idEditora}/livros").uri(uriBiblioteca + "bilioteca/editoras/{idEditora}/livros"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "editoras/{idEditora}/autores").uri(uriBiblioteca + "bilioteca/editoras/{idEditora}/autores"))
 
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "clientes").uri(uriBiblioteca + "bilioteca/clientes"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "clientes/{idCliente}").uri(uriBiblioteca + "bilioteca/clientes/{idCliente}"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "clientes/{idCliente}/pedidos").uri(uriBiblioteca + "bilioteca/clientes/{idCliente}/pedidos"))
+                // autenticacao
+                .route("rota autenticacao", p -> p
+                        .path(uriBaseGatewayAutenticacao + "**")
+                        .filters(f->f.rewritePath(uriBaseGatewayAutenticacao + "(?<path>.*)",uriPrefixoAutenticacao + "${path}"))
+                        .uri(uriAutenticacao))
                 
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "carrinhoCompra/{idLivro}").uri(uriBiblioteca + "bilioteca/carrinhoCompra/{idLivro}"))
+                // pagamento
+                .route("rota pagamento", p -> p
+                        .path(uriBaseGatewayPagamento + "**")
+                        .filters(f->f.rewritePath(uriBaseGatewayPagamento + "(?<path>.*)",uriPrefixoPagamento + "${path}"))
+                        .uri(uriPagamento))
                 
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "pedido").uri(uriBiblioteca + "bilioteca/pedido"))
-                .route(p -> p.path(uriBaseGatewayBiblioteca + "pedido/{idPedido}").uri(uriBiblioteca + "bilioteca/pedido/{idPedido}"))
+                // auditoria
+                .route("rota auditoria", p -> p
+                        .path(uriBaseGatewayAuditoria + "**")
+                        .filters(f->f.rewritePath(uriBaseGatewayAuditoria + "(?<path>.*)",uriPrefixoAuditoria + "${path}"))
+                        .uri(uriAuditoria))
                 
-                // autenticacao TODO
-                .route(p -> p.path("/v1/gateway/bilioteca/livro").uri(uriAutenticacao + "/get"))
-                
-                // pagamento TODO
-                .route(p -> p.path("/v1/gateway/bilioteca/livro").uri(uriPagamento + "/get"))
-                
-                // auditoria TODO
-                .route(p -> p.path("/v1/gateway/bilioteca/livro").uri(uriAuditoria + "/get"))
-                
-                .route(p -> p.path("/v1/public/bilioteca/livro").uri(httpUri + "/get"))
-                .route(p -> p.path("/v1/public/bilioteca/revista").uri(httpUri + "/get"))
-                .route(p -> p.path("/get").filters(f -> f.addRequestHeader("Hello", "World")).uri(httpUri))
                 .build();
     }
     // end::route-locator[]
