@@ -47,7 +47,6 @@ public class Application {
                         .filters(f->f.rewritePath(uriBaseGatewayBiblioteca + "(?<path>.*)",uriPrefixoBiblioteca + "${path}"))
                         .uri(uriBiblioteca))
                 
-
                 // autenticacao
                 .route("rota autenticacao", p -> p
                         .path(uriBaseGatewayAutenticacao + "**")
@@ -66,6 +65,12 @@ public class Application {
                         .filters(f->f.rewritePath(uriBaseGatewayAuditoria + "(?<path>.*)",uriPrefixoAuditoria + "${path}"))
                         .uri(uriAuditoria))
                 
+                .route("circuit breakers", p -> p
+                    .host("*.hystrix.com")
+                    .filters(f -> f.hystrix(config -> config
+                    .setName("mycmd")
+                    .setFallbackUri("forward:/fallback")))                
+                    .uri(uriBiblioteca))
                 .build();
     }
     // end::route-locator[]
