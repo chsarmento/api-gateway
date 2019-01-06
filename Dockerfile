@@ -26,7 +26,8 @@ RUN mvn install
 ARG JAR_FILE=target/gateway-0.0.1-SNAPSHOT.jar
 
 # Add the application's jar to the container
-ADD ${JAR_FILE} api-gateway.jar
+#ADD ${JAR_FILE} api-gateway.jar
 
 # Run the jar file 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","api-gateway.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","target/gateway-0.0.1-SNAPSHOT.jar"]
+
